@@ -172,7 +172,7 @@ export default class FeedbackRepository implements IFeedbackRepository {
   }
 
   async Destroy(id: string): Promise<void> {
-    const docRef = doc(this.db, `users/${id}`);
+    const docRef = doc(this.db, `assistantfeedback/${id}`);
 
     await deleteDoc(docRef);
   }
