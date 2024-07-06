@@ -21,5 +21,6 @@ const feedbackRouter = express.Router();
 feedbackRouter.get('/', controller.Index);
 feedbackRouter.get('/find', controller.Show);
 feedbackRouter.post('/', controller.Create);
+feedbackRouter.delete('/:id', controller.Destroy);
 
 export default feedbackRouter;

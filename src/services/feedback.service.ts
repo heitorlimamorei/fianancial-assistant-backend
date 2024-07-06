@@ -19,6 +19,7 @@ export interface IFeedbackService {
   ShowByEmail(email: string): Promise<IFinancialAssistantFeedback>;
   ShowBySheetId(sheetId: string): Promise<IFinancialAssistantFeedback>;
   ShowByUserId(userId: string): Promise<IFinancialAssistantFeedback>;
+  Destroy(id: string): Promise<void>;
 }
 
 export default class FeedbackService implements IFeedbackService {
@@ -38,6 +39,7 @@ export default class FeedbackService implements IFeedbackService {
     this.ShowByEmail = this.ShowByEmail.bind(this);
     this.ShowBySheetId = this.ShowBySheetId.bind(this);
     this.ShowByUserId = this.ShowByUserId.bind(this);
+    this.Destroy = this.Destroy.bind(this);
   }
 
   async Index(): Promise<IFinancialAssistantFeedback[]> {
@@ -78,5 +80,9 @@ export default class FeedbackService implements IFeedbackService {
   async ShowByUserId(userId: string): Promise<IFinancialAssistantFeedback> {
     const feedback = await this.Repository.ShowByUserId(userId);
     return feedback;
+  }
+
+  async Destroy(id: string): Promise<void> {
+    await this.Repository.Destroy(id);
   }
 }

@@ -15,6 +15,7 @@ export interface IFeedbackController {
   Index(req: Request, res: Response, next: NextFunction): Promise<void>;
   Create(req: Request, res: Response, next: NextFunction): Promise<void>;
   Show(req: Request, res: Response, next: NextFunction): Promise<void>;
+  Destroy(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 
 export default class FeedbackController implements IFeedbackController {
@@ -29,6 +30,7 @@ export default class FeedbackController implements IFeedbackController {
     this.Create = this.Create.bind(this);
     this.Show = this.Show.bind(this);
     this.Index = this.Index.bind(this);
+    this.Destroy = this.Destroy.bind(this);
   }
 
   async Index(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -111,6 +113,29 @@ export default class FeedbackController implements IFeedbackController {
         return;
       }
       this.GenerateHandlerError(`MALFORMED REQUEST must have a query`, 400);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async Destroy(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const id = req.params.id;
+
+      if (!id) {
+        this.GenerateHandlerError(`MALFORMED REQUEST must have a id`, 400);
+        return;
+      }
+
+      await this.Service.Destroy(id);
+
+      res.status(204).json({
+        message: 'Success(204) Feedback was successfully deleted',
+      });
     } catch (err) {
       next(err);
     }

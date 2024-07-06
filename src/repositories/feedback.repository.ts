@@ -5,6 +5,7 @@ import {
   QuerySnapshot,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -23,6 +24,7 @@ export interface IFeedbackRepository {
   ShowByEmail(email: string): Promise<IFinancialAssistantFeedback>;
   ShowBySheetId(sheetId: string): Promise<IFinancialAssistantFeedback>;
   ShowByUserId(userId: string): Promise<IFinancialAssistantFeedback>;
+  Destroy(id: string): Promise<void>;
 }
 
 type ProcessSnapshotsType = <T>(
@@ -45,6 +47,7 @@ export default class FeedbackRepository implements IFeedbackRepository {
     this.ShowByEmail = this.ShowByEmail.bind(this);
     this.ShowBySheetId = this.ShowBySheetId.bind(this);
     this.ShowByUserId = this.ShowByUserId.bind(this);
+    this.Destroy = this.Destroy.bind(this);
   }
 
   async Index(): Promise<IFinancialAssistantFeedback[]> {
@@ -166,5 +169,11 @@ export default class FeedbackRepository implements IFeedbackRepository {
     }
 
     return feedbacks[0];
+  }
+
+  async Destroy(id: string): Promise<void> {
+    const docRef = doc(this.db, `users/${id}`);
+
+    await deleteDoc(docRef);
   }
 }
